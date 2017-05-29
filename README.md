@@ -11,5 +11,5 @@ Matches submitted requests in test files against the API endpoints specified in 
 ```
 
 ## Examples
-* `test-coverage -s "http://localhost:8080/explorer/swagger.json" -t "../my-project/test"`
-* `test-coverage -s "../swagger.json" -t "../my-project/test" -c 95`
+* `swagger-coverage -s "http://localhost:8080/explorer/swagger.json" -t "../my-project/test"`
+* `swagger-coverage -s "../swagger.json" -t "../my-project/test" -c 95`
