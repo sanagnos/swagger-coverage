@@ -1,0 +1,11 @@
+{
+  "name": "swagger-coverage",
+  "version": "0.0.1",
+  "license": "MIT",
+  "scripts": {
+    "start": "node main.js"
+  },
+  "dependencies": {
+    "swagger-walk": "git+ssh://git@github.com/paulvollmer/swagger-walk.git"
+  }
+}
