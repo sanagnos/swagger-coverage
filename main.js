@@ -21,7 +21,7 @@ if (!SWAGGER) {
   process.exit(1)
 }
 
-if (!SWAGGER) {
+if (!TEST) {
   console.error('Missing path to the test directory')
   process.exit(1)
 }
