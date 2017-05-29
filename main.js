@@ -1,3 +1,4 @@
+#! /usr/bin/env node
 'use strict'
 
 // imports
@@ -12,11 +13,19 @@ for (var i = 2, l = process.argv.length; i < l; ++i)
 
 
 // constants
-var TEST    = argmap['-t'] || argmap['--test']
-var SWAGGER = argmap['-s'] || argmap['--swagger']
+var COVERAGE = argmap['-c'] || argmap['--coverage']
+var TEST     = argmap['-t'] || argmap['--test']
+var SWAGGER  = argmap['-s'] || argmap['--swagger']
 
-if (!SWAGGER) throw new Error('Missing path to the swagger file')
-if (!TEST) throw new Error('Missing path to the test directory')
+if (!SWAGGER) {
+  console.error('Missing path to swagger json')
+  process.exit(1)
+}
+
+if (!SWAGGER) {
+  console.error('Missing path to the test directory')
+  process.exit(1)
+}
 
 // list of test files
 const testFiles = fs.readdirSync(TEST).filter(function (path) {
@@ -86,4 +95,11 @@ function onDone () {
   console.log('Total endpoints       : ' + sum)
   console.log('Endpoint test coverage: ' + (100 * hasTest.length / sum).toFixed(2) + '%')
   console.log(' ')
+
+  if (COVERAGE !== undefined && 100 * hasTest.length / sum < COVERAGE) {
+    console.log('Current coverage below given target')
+    process.exit(1)
+  } else {
+    process.exit(0)
+  }
 }
