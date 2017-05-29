@@ -24,6 +24,9 @@
       "node",
       "es6",
       "mocha"
+    ],
+    "ignore": [
+      "/test/fixtures"
     ]
   },
   "devDependencies": {

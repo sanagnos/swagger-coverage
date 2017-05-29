@@ -1,7 +1,6 @@
 const expect = require('expect')
 const Coverage = require('../coverage')
 
-
 describe('Coverage', () => {
   it('process', () => {
     let myCoverage = new Coverage()

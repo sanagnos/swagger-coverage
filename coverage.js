@@ -11,11 +11,11 @@ class Coverage {
     this.coverage = 0
   }
 
-  setSwaggerSource(src) {
+  setSwaggerSource (src) {
     this.swaggerSource = src
   }
 
-  setTestDir(dir) {
+  setTestDir (dir) {
     this.testDir = dir
      // list of test files
     this.testFiles = fs.readdirSync(dir).filter(function (path) {
@@ -23,7 +23,7 @@ class Coverage {
     })
   }
 
-  process(coverage) {
+  process (coverage) {
     let self = this
 
     // map test file path -> test file data
@@ -33,11 +33,11 @@ class Coverage {
       for (var j = 0, jl = code.length; j < jl; ++j) {
         var line = code[j]
         var match = // match for "request(<method>, <route>)"
-          line.match(/request\(\'(.*)\'\,\s\'(.*)\'\)/) ||
-          line.match(/request\(\'(.*)\'\,\s\`(.*)\`\)/)
+          line.match(/request\('(.*)',\s'(.*)'\)/) ||
+          line.match(/request\('(.*)',\s`(.*)`\)/)
         if (match) {
           var method = match[1].toLowerCase()
-          var route  = match[2].toLowerCase()
+          var route = match[2].toLowerCase()
             .replace(/[-0-9]{1,10}/g, '{id}')
             .replace(/\$\{.*\}/g, '{id}')
           if (requests[route] === undefined) requests[route] = {}
@@ -57,7 +57,7 @@ class Coverage {
       })
       return onDone()
     } else {
-      sw.loadSpec(swaggerSource, function () {
+      sw.loadSpec(self.swaggerSource, function () {
         sw.walkPathMethods(function (index, route, method, data) {
           onMethod(route, method)
         })

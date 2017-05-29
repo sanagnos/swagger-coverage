@@ -5,13 +5,12 @@ const Coverage = require('./coverage')
 
 // parse arguments
 var argmap = {}
-for (var i = 2, l = process.argv.length; i < l; ++i)
-  argmap[process.argv[i]] = process.argv[++i]
+for (var i = 2, l = process.argv.length; i < l; ++i) { argmap[process.argv[i]] = process.argv[++i] }
 
 // constants
 var COVERAGE = argmap['-c'] || argmap['--coverage']
-var TEST     = argmap['-t'] || argmap['--test']
-var SWAGGER  = argmap['-s'] || argmap['--swagger']
+var TEST = argmap['-t'] || argmap['--test']
+var SWAGGER = argmap['-s'] || argmap['--swagger']
 
 if (!SWAGGER) {
   console.error('Missing path to swagger json')
@@ -43,4 +42,3 @@ if (result.passed) {
   console.log('Current coverage below given target')
   process.exit(1)
 }
-process.exit(result.exitcode)
