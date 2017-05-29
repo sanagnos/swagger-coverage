@@ -5,28 +5,28 @@ const fs = require('fs')
 const path = require('path')
 const SwaggerWalk = require('swagger-walk')
 
+// parse arguments
+var argmap = {}
+for (var i = 2, l = process.argv.length; i < l; ++i)
+  argmap[process.argv[i]] = process.argv[++i]
+
+
 // constants
-const SWAGGER_FILE = null
-const TEST_DIR     = null
+var TEST    = argmap['-t'] || argmap['--test']
+var SWAGGER = argmap['-s'] || argmap['--swagger']
 
-if (!SWAGGER_FILE)
-  throw new Error('Missing path to the swagger file (SWAGGER_FILE)')
-
-if (!TEST_DIR)
-  throw new Error('Missing path to the test directory (TEST_DIR)')
-
-// swagger json to object
-const swagger = require(SWAGGER_FILE)
+if (!SWAGGER) throw new Error('Missing path to the swagger file')
+if (!TEST) throw new Error('Missing path to the test directory')
 
 // list of test files
-const testFiles = fs.readdirSync(TEST_DIR).filter(function (path) {
+const testFiles = fs.readdirSync(TEST).filter(function (path) {
   return /.js$/.test(path)
 })
 
 // map test file path -> test file data
 var requests = {}
 for (var i = 0, l = testFiles.length; i < l; ++i) {
-  var code = fs.readFileSync(path.join(TEST_DIR, testFiles[i]), 'utf8').split(/\n/g)
+  var code = fs.readFileSync(path.join(TEST, testFiles[i]), 'utf8').split(/\n/g)
   for (var j = 0, jl = code.length; j < jl; ++j) {
     var line = code[j]
     var match = // match for "request(<method>, <route>)"
@@ -47,8 +47,22 @@ for (var i = 0, l = testFiles.length; i < l; ++i) {
 var hasTest = []
 var noTest = []
 const sw = new SwaggerWalk()
-sw.setSpec(swagger)
-sw.walkPathMethods(function (index, route, method, data) {
+if (fs.existsSync(SWAGGER)) {
+  sw.setSpec(require(SWAGGER))
+  sw.walkPathMethods(function (index, route, method, data) {
+    onMethod(route, method)
+  })
+  onDone()
+} else {
+  sw.loadSpec(SWAGGER, function () {
+    sw.walkPathMethods(function (index, route, method, data) {
+      onMethod(route, method)
+    })
+    onDone()
+  })
+}
+
+function onMethod (route, method) {
   route = route.toLowerCase()
   if (!requests[route] || !requests[route][method]) {
     if (noTest.length === 0) {
@@ -61,14 +75,15 @@ sw.walkPathMethods(function (index, route, method, data) {
   } else {
     hasTest.push(`${method.toUpperCase()} ${route}`)
   }
-})
+}
 
-// log stats
-var sum = hasTest.length + noTest.length
-console.log(' ')
-console.log('Stats')
-console.log('==================================================================')
-console.log('Untested endpoints    : ' + noTest.length)
-console.log('Total endpoints       : ' + sum)
-console.log('Endpoint test coverage: ' + (100 * hasTest.length / sum).toFixed(2) + '%')
-console.log(' ')
+function onDone () {
+  var sum = hasTest.length + noTest.length
+  console.log(' ')
+  console.log('Stats')
+  console.log('==================================================================')
+  console.log('Untested endpoints    : ' + noTest.length)
+  console.log('Total endpoints       : ' + sum)
+  console.log('Endpoint test coverage: ' + (100 * hasTest.length / sum).toFixed(2) + '%')
+  console.log(' ')
+}
