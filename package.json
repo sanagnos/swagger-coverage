@@ -2,10 +2,36 @@
   "name": "swagger-coverage",
   "version": "0.0.1",
   "license": "MIT",
+  "homepage": "https://github.com/sanagnos/swagger-coverage#readme",
+  "bugs": {
+    "url": "https://github.com/sanagnos/swagger-coverage/issues"
+  },
   "bin": {
     "swagger-coverage": "main.js"
   },
+  "scripts": {
+    "pretest2": "node_modules/.bin/standard",
+    "test": "npm run test-src && npm run test-cli",
+    "test-src": "node_modules/.bin/_mocha test/*.test.js",
+    "test-cli": "node main.js -s ./test/fixtures/swagger.json -t ./test/fixtures/testcode -c 5"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sanagnos/swagger-coverage.git"
+  },
+  "standard": {
+    "env": [
+      "node",
+      "es6",
+      "mocha"
+    ]
+  },
+  "devDependencies": {
+    "expect": "^1.20.2",
+    "mocha": "^3.4.1",
+    "standard": "^10.0.2"
+  },
   "dependencies": {
-    "swagger-walk": "git+ssh://git@github.com/paulvollmer/swagger-walk.git"
+    "swagger-walk": "paulvollmer/swagger-walk#v0.1.0"
   }
 }
