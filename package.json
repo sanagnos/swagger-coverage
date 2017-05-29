@@ -10,7 +10,7 @@
     "swagger-coverage": "main.js"
   },
   "scripts": {
-    "pretest2": "node_modules/.bin/standard",
+    "pretest": "node_modules/.bin/standard",
     "test": "npm run test-src && npm run test-cli",
     "test-src": "node_modules/.bin/_mocha test/*.test.js",
     "test-cli": "node main.js -s ./test/fixtures/swagger.json -t ./test/fixtures/testcode -c 5"
