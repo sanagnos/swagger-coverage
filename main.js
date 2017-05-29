@@ -11,7 +11,6 @@ var argmap = {}
 for (var i = 2, l = process.argv.length; i < l; ++i)
   argmap[process.argv[i]] = process.argv[++i]
 
-
 // constants
 var COVERAGE = argmap['-c'] || argmap['--coverage']
 var TEST     = argmap['-t'] || argmap['--test']

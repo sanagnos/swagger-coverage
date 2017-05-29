@@ -2,6 +2,8 @@
 
 Matches submitted requests in test files against the API endpoints specified in `swagger.json` and finds which endpoints are untested.
 
+_Note: The module uses regexp matching to check for calls of this form: `request('<method>', '<route>')`_
+
 # Getting started
 ## Arguments
 ```
