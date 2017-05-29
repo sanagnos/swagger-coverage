@@ -1,4 +1,4 @@
-# swagger-coverage
+# swagger-coverage [![Build Status](https://travis-ci.org/sanagnos/swagger-coverage.svg?branch=master)](https://travis-ci.org/sanagnos/swagger-coverage)
 
 Matches submitted requests in test files against the API endpoints specified in `swagger.json` and finds which endpoints are untested.
 
